@@ -653,7 +653,7 @@ const cache = new InMemoryCache({
 });
 ```
 
-Note that `existing` will be undefined the very first time the `merge` function is called, since the cache does not contain any data for this field (within this particular object) yet. The default `existing = []` parameter style is a good solution for this case.
+Note that `existing` will be undefined the very first time the `merge` function is called, since the cache does not contain any data for this field (within this particular object) yet. The `existing = []` default parameter style is a convenient way to handle this case.
 
 You might be tempted to write this function in a more destructive, less "functional" style:
 
@@ -714,7 +714,7 @@ const cache = new InMemoryCache({
 
 As you can see in this example, your `read` function will often need to cooperate with your `merge` function, by handling the same arguments in the inverse direction.
 
-If you want to start after a specific task ID, rather than starting from a numeric `args.offset` value, you might implement your `merge` and `read` functions as follows, using the `readField` helper function to examine existing task IDs:
+If you want to start after a specific task ID, rather than starting from `args.offset`, you might implement your `merge` and `read` functions as follows, using the `readField` helper function to examine existing task IDs:
 
 ```ts
 const cache = new InMemoryCache({
@@ -762,7 +762,7 @@ const cache = new InMemoryCache({
 });
 ```
 
-As a reminder, if you call `readField(fieldName)`, it will return the value of that field from the current object. If you also pass an object or reference as the second argument, `readField` will read from that object instead of the current object. Reading the `id` field from existing task objects allows us to deduplicate the incoming task data.
+As a reminder, if you call `readField(fieldName)`, it will return the value of that field from the current object. If you also pass an object or reference as the second argument, `readField` will read from that object instead of the current object. In this example, reading the `id` field from existing task objects allows us to deduplicate the `incoming` task data.
 
 The above code is getting complicated, but no more complicated than the underlying problem demands. It is, however, already far too complicated for Apollo Client to anticipate by default, which is why the `InMemoryCache` gives you complete control in the form of `read` and `merge` functions.
 
